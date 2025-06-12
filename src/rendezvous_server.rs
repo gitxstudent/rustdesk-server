@@ -675,18 +675,10 @@ impl RendezvousServer {
         &mut self,
         addr: SocketAddr,
         ph: PunchHoleRequest,
-        key: &str,
+        _key: &str,
         ws: bool,
     ) -> ResultType<(RendezvousMessage, Option<SocketAddr>)> {
         let mut ph = ph;
-        if !key.is_empty() && ph.licence_key != key {
-            let mut msg_out = RendezvousMessage::new();
-            msg_out.set_punch_hole_response(PunchHoleResponse {
-                failure: punch_hole_response::Failure::LICENSE_MISMATCH.into(),
-                ..Default::default()
-            });
-            return Ok((msg_out, None));
-        }
         let id = ph.id;
         // punch hole request from A, relay to B,
         // check if in same intranet first,
