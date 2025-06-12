@@ -1,2 +1,2 @@
 bin/hbbr usr/bin
-systemd/rustdesk-hbbr.service lib/systemd/system
+systemd/vnfap-hbbr.service lib/systemd/system

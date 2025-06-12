@@ -12,7 +12,7 @@
 # File Info
 
 !define APP_NAME "VNFapServer"
-!define PRODUCT_NAME "rustdesk_server"
+!define PRODUCT_NAME "vnfap_server"
 !define PRODUCT_DESCRIPTION "Installer for ${PRODUCT_NAME}"
 !define COPYRIGHT "Copyright © 2021"
 !define VERSION "1.1.14"

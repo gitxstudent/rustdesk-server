@@ -1,5 +1,5 @@
 [package]
-name = "rustdesk_server"
+name = "vnfap_server"
 version = "0.1.2"
 description = "rustdesk server gui"
 authors = ["elilchen"]

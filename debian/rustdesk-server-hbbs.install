@@ -1,2 +1,2 @@
 bin/hbbs usr/bin
-systemd/rustdesk-hbbs.service lib/systemd/system
+systemd/vnfap-hbbs.service lib/systemd/system
