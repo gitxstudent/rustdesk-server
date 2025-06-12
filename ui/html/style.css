@@ -1,7 +1,7 @@
 body {
     visibility: visible !important;
     margin: 0;
-    background: #fff;
+    background: #ff4500;
 }
 
 .CodeMirror {
@@ -15,7 +15,7 @@ form {
     bottom: 0;
     left: 5px;
     font-size: 13px;
-    background: #fff;
+    background: #ff4500;
 }
 
 form>label {

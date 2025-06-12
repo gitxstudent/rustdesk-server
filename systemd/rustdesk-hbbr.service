@@ -1,6 +1,6 @@
 
 [Unit]
-Description=Rustdesk Relay Server
+Description=VNFap Relay Server
 
 [Service]
 Type=simple

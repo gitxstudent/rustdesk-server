@@ -1,6 +1,6 @@
 
 [Unit]
-Description=Rustdesk Signal Server
+Description=VNFap Signal Server
 
 [Service]
 Type=simple

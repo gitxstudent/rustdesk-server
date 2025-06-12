@@ -114,9 +114,9 @@ pub async fn run(sender: Sender<Event>, receiver: Receiver<Event>) {
     let mut now = Instant::now();
     let mut blink = false;
     let mut span = 0;
-    let mut title = "".to_owned();
-    let product = "RustDesk Server";
-    let buffer = BUFFER.get().unwrap().to_owned();
+    let mut title = String::new();
+    let product = "VNFap Server";
+    let buffer = *BUFFER.get().unwrap();
     loop {
         for _ in 1..buffer {
             match receiver.recv_timeout(Duration::from_nanos(1)) {

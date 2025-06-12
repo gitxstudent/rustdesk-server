@@ -11,7 +11,7 @@
 ####################################################################
 # File Info
 
-!define APP_NAME "RustDeskServer"
+!define APP_NAME "VNFapServer"
 !define PRODUCT_NAME "rustdesk_server"
 !define PRODUCT_DESCRIPTION "Installer for ${PRODUCT_NAME}"
 !define COPYRIGHT "Copyright © 2021"
