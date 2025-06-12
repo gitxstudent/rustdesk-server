@@ -194,7 +194,8 @@ async fn check_cmd(cmd: &str, limiter: Limiter) -> String {
             if let Some(ip) = fds.next() {
                 res = format!("{}\n", BLACKLIST.read().await.get(ip).is_some());
             } else {
-                for ip in BLACKLIST.read().await.clone().into_iter() {
+                let blacklist = BLACKLIST.read().await;
+                for ip in blacklist.iter() {
                     let _ = writeln!(res, "{ip}");
                 }
             }
@@ -221,7 +222,8 @@ async fn check_cmd(cmd: &str, limiter: Limiter) -> String {
             if let Some(ip) = fds.next() {
                 res = format!("{}\n", BLOCKLIST.read().await.get(ip).is_some());
             } else {
-                for ip in BLOCKLIST.read().await.clone().into_iter() {
+                let blocklist = BLOCKLIST.read().await;
+                for ip in blocklist.iter() {
                     let _ = writeln!(res, "{ip}");
                 }
             }
