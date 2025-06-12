@@ -6,10 +6,9 @@ use hbb_common::{
     log,
     tokio,
     ResultType,
-    VER_TYPE_RUSTDESK_SERVER,
 };
 
-const VER_TYPE_VNFAP_SERVER: &str = VER_TYPE_RUSTDESK_SERVER;
+const VER_TYPE_VNFAP_SERVER: &str = "server";
 use ini::Ini;
 use sodiumoxide::crypto::sign;
 use std::{
@@ -164,31 +163,24 @@ pub fn gen_sk(wait: u64) -> (String, Option<sign::SecretKey>) {
 
 #[cfg(unix)]
 pub async fn listen_signal() -> Result<()> {
-    use hbb_common::tokio;
     use hbb_common::tokio::signal::unix::{signal, SignalKind};
 
-    tokio::spawn(async {
-        let mut s = signal(SignalKind::terminate())?;
-        let terminate = s.recv();
-        let mut s = signal(SignalKind::interrupt())?;
-        let interrupt = s.recv();
-        let mut s = signal(SignalKind::quit())?;
-        let quit = s.recv();
+    let mut terminate = signal(SignalKind::terminate())?;
+    let mut interrupt = signal(SignalKind::interrupt())?;
+    let mut quit = signal(SignalKind::quit())?;
 
-        tokio::select! {
-            _ = terminate => {
-                log::info!("signal terminate");
-            }
-            _ = interrupt => {
-                log::info!("signal interrupt");
-            }
-            _ = quit => {
-                log::info!("signal quit");
-            }
+    tokio::select! {
+        _ = terminate.recv() => {
+            log::info!("signal terminate");
         }
-        Ok(())
-    })
-    .await?
+        _ = interrupt.recv() => {
+            log::info!("signal interrupt");
+        }
+        _ = quit.recv() => {
+            log::info!("signal quit");
+        }
+    }
+    Ok(())
 }
 
 #[cfg(not(unix))]
