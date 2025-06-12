@@ -1,6 +1,12 @@
 use clap::App;
 use hbb_common::{
-    allow_err, anyhow::{Context, Result}, get_version_number, log, tokio, ResultType
+    allow_err,
+    anyhow::{Context, Result},
+    get_version_number,
+    log,
+    tokio,
+    ResultType,
+    VER_TYPE_RUSTDESK_SERVER as VER_TYPE_VNFAP_SERVER,
 };
 use ini::Ini;
 use sodiumoxide::crypto::sign;
@@ -202,7 +208,8 @@ pub fn check_software_update() {
 
 #[tokio::main(flavor = "current_thread")]
 async fn check_software_update_() -> hbb_common::ResultType<()> {
-    let (request, url) = hbb_common::version_check_request(hbb_common::VER_TYPE_RUSTDESK_SERVER.to_string());
+    let (request, url) =
+        hbb_common::version_check_request(VER_TYPE_VNFAP_SERVER.to_string());
     let latest_release_response = reqwest::Client::builder().build()?
         .post(url)
         .json(&request)
