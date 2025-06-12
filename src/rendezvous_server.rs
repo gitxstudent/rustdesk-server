@@ -1228,8 +1228,11 @@ impl RendezvousServer {
 }
 
 async fn check_relay_servers(rs0: Arc<RelayServers>, tx: Sender) {
-    let mut futs = Vec::new();
+    use futures::stream::{FuturesUnordered, StreamExt};
+
     let rs = Arc::new(Mutex::new(Vec::new()));
+    let mut tasks = FuturesUnordered::new();
+
     for x in rs0.iter() {
         let mut host = x.to_owned();
         if !host.contains(':') {
@@ -1237,7 +1240,7 @@ async fn check_relay_servers(rs0: Arc<RelayServers>, tx: Sender) {
         }
         let rs = rs.clone();
         let x = x.clone();
-        futs.push(tokio::spawn(async move {
+        tasks.push(tokio::spawn(async move {
             if FramedStream::new(&host, None, CHECK_RELAY_TIMEOUT)
                 .await
                 .is_ok()
@@ -1246,7 +1249,9 @@ async fn check_relay_servers(rs0: Arc<RelayServers>, tx: Sender) {
             }
         }));
     }
-    join_all(futs).await;
+
+    while tasks.next().await.is_some() {}
+
     log::debug!("check_relay_servers");
     let rs = std::mem::take(&mut *rs.lock().await);
     if !rs.is_empty() {
