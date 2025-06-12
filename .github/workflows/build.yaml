@@ -71,7 +71,7 @@ jobs:
           path: |
             target/${{ matrix.job.target }}/release/hbbr
             target/${{ matrix.job.target }}/release/hbbs
-            target/${{ matrix.job.target }}/release/rustdesk-utils
+            target/${{ matrix.job.target }}/release/vnfap-utils
           if-no-files-found: error
 
   build-win:
@@ -161,7 +161,7 @@ jobs:
           path: |
             ui\SignOutput\hbbr.exe
             ui\SignOutput\hbbs.exe
-            ui\SignOutput\rustdesk-utils.exe
+            ui\SignOutput\vnfap-utils.exe
             ui\SignOutput\VNFapServer.Setup.exe
           if-no-files-found: error
 

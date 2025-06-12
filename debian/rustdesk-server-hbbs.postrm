@@ -6,7 +6,7 @@ SERVICE=vnfap-hbbs.service
 systemctl --system daemon-reload >/dev/null || true
 
 if [ "$1" = "purge" ]; then
-	rm -rf /var/lib/vnfap-server/ /var/log/vnfap-server/rustdesk-hbbs.*
+        rm -rf /var/lib/vnfap-server/ /var/log/vnfap-server/vnfap-hbbs.*
 	deb-systemd-helper purge "${SERVICE}" >/dev/null || true
 	deb-systemd-helper unmask "${SERVICE}" >/dev/null || true
 fi

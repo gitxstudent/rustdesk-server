@@ -30,12 +30,12 @@ cargo build --release
 
 - hbbs - VNFap ID/會合伺服器
 - hbbr - VNFap 中繼伺服器
-- rustdesk-utils - VNFap 命令行工具
+- vnfap-utils - VNFap 命令行工具
 
 您可以在 [releases](https://github.com/gitxstudent/vnfap-server/releases) 頁面上找到更新的執行檔。
 
 
-如果您想開發自己的伺服器，[rustdesk-server-demo](https://github.com/gitxstudent/vnfap-server-demo) 可能是一個比這個倉庫更好、更簡單的開始。
+如果您想開發自己的伺服器，[vnfap-server-demo](https://github.com/gitxstudent/vnfap-server-demo) 可能是一個比這個倉庫更好、更簡單的開始。
 
 ## Docker 映像檔
 
@@ -299,13 +299,13 @@ secrets:
 您可以使用以下命令生成一對金鑰：
 
 ```bash
-/usr/bin/rustdesk-utils genkeypair
+/usr/bin/vnfap-utils genkeypair
 ```
 
-如果您沒有（或不想）在系統上安裝 `rustdesk-utils` 套件，您可以使用 Docker執行相同的命令：
+如果您沒有（或不想）在系統上安裝 `vnfap-utils` 套件，您可以使用 Docker執行相同的命令：
 
 ```bash
-docker run --rm --entrypoint /usr/bin/rustdesk-utils  vnfap/vnfap-server-s6:latest genkeypair
+docker run --rm --entrypoint /usr/bin/vnfap-utils  vnfap/vnfap-server-s6:latest genkeypair
 ```
 
 輸出將類似於以下內容：

@@ -30,11 +30,11 @@ In target/release werden drei ausführbare Dateien erzeugt.
 
 - hbbs - VNFap ID/Rendezvous-Server
 - hbbr - VNFap Relay-Server
-- rustdesk-utils - VNFap CLI-Utilities
+- vnfap-utils - VNFap CLI-Utilities
 
 [Hier](https://github.com/gitxstudent/vnfap-server/releases) finden Sie aktualisierte Binärdateien.
 
-Wenn Sie Ihren eigenen Server entwickeln wollen, könnte [rustdesk-server-demo](https://github.com/gitxstudent/vnfap-server-demo) ein besserer und einfacherer Start für Sie sein als dieses Repository.
+Wenn Sie Ihren eigenen Server entwickeln wollen, könnte [vnfap-server-demo](https://github.com/gitxstudent/vnfap-server-demo) ein besserer und einfacherer Start für Sie sein als dieses Repository.
 
 ## Docker-Image
 
@@ -298,13 +298,13 @@ Für die Verschlüsselung wird ein Schlüsselpaar benötigt, das Sie bereitstell
 Mit diesem Befehl können Sie ein Schlüsselpaar erzeugen:
 
 ```bash
-/usr/bin/rustdesk-utils genkeypair
+/usr/bin/vnfap-utils genkeypair
 ```
 
-Wenn Sie das Paket `rustdesk-utils` nicht auf Ihrem System installiert haben (oder dies nicht wollen), können Sie den gleichen Befehl mit Docker aufrufen:
+Wenn Sie das Paket `vnfap-utils` nicht auf Ihrem System installiert haben (oder dies nicht wollen), können Sie den gleichen Befehl mit Docker aufrufen:
 
 ```bash
-docker run --rm --entrypoint /usr/bin/rustdesk-utils  vnfap/vnfap-server-s6:latest genkeypair
+docker run --rm --entrypoint /usr/bin/vnfap-utils  vnfap/vnfap-server-s6:latest genkeypair
 ```
 
 Die Ausgabe sieht dann etwa so aus:

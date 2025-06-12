@@ -10,11 +10,11 @@ use std::{
 fn print_help() {
     println!(
         "Usage:
-    rustdesk-utils [command]\n
+    vnfap-utils [command]\n
 Available Commands:
     genkeypair                                   Generate a new keypair
     validatekeypair [public key] [secret key]    Validate an existing keypair
-    doctor [rustdesk-server]                     Check for server connection problems"
+    doctor [vnfap-server]                     Check for server connection problems"
     );
     process::exit(0x0001);
 }
@@ -33,42 +33,21 @@ fn gen_keypair() {
 }
 
 fn validate_keypair(pk: &str, sk: &str) -> ResultType<()> {
-    let sk1 = base64::decode(sk);
-    if sk1.is_err() {
-        bail!("Invalid secret key");
-    }
-    let sk1 = sk1.unwrap();
+    let sk1 = base64::decode(sk).map_err(|_| "Invalid secret key")?;
+    let secret_key =
+        sign::SecretKey::from_slice(&sk1).ok_or("Invalid Secret key")?;
 
-    let secret_key = sign::SecretKey::from_slice(sk1.as_slice());
-    if secret_key.is_none() {
-        bail!("Invalid Secret key");
-    }
-    let secret_key = secret_key.unwrap();
+    let pk1 = base64::decode(pk).map_err(|_| "Invalid public key")?;
+    let public_key =
+        sign::PublicKey::from_slice(&pk1).ok_or("Invalid Public key")?;
 
-    let pk1 = base64::decode(pk);
-    if pk1.is_err() {
-        bail!("Invalid public key");
-    }
-    let pk1 = pk1.unwrap();
-
-    let public_key = sign::PublicKey::from_slice(pk1.as_slice());
-    if public_key.is_none() {
-        bail!("Invalid Public key");
-    }
-    let public_key = public_key.unwrap();
-
-    let random_data_to_test = b"This is meh.";
-    let signed_data = sign::sign(random_data_to_test, &secret_key);
-    let verified_data = sign::verify(&signed_data, &public_key);
-    if verified_data.is_err() {
+    const TEST_BYTES: &[u8] = b"This is meh.";
+    let signed = sign::sign(TEST_BYTES, &secret_key);
+    let verified = sign::verify(&signed, &public_key)
+        .map_err(|_| "Key pair is INVALID")?;
+    if TEST_BYTES != &verified[..] {
         bail!("Key pair is INVALID");
     }
-    let verified_data = verified_data.unwrap();
-
-    if random_data_to_test != &verified_data[..] {
-        bail!("Key pair is INVALID");
-    }
-
     Ok(())
 }
 
@@ -120,22 +99,20 @@ fn doctor_ip(server_ip_address: std::net::IpAddr, server_address: Option<&str>) 
 }
 
 fn doctor(server_address_unclean: &str) {
-    let server_address3 = server_address_unclean.trim();
-    let server_address2 = server_address3.to_lowercase();
-    let server_address = server_address2.as_str();
+    let server_address = server_address_unclean.trim().to_lowercase();
     println!("Checking server:  {server_address}\n");
     if let Ok(server_ipaddr) = server_address.parse::<IpAddr>() {
         // user requested an ip address
         doctor_ip(server_ipaddr, None);
     } else {
         // the passed string is not an ip address
-        let ips: Vec<std::net::IpAddr> = lookup_host(server_address).unwrap();
+        let ips: Vec<std::net::IpAddr> = lookup_host(&server_address).unwrap();
         println!("Found {} IP addresses: ", ips.len());
 
         ips.iter().for_each(|ip| println!(" - {ip}"));
 
         ips.iter()
-            .for_each(|ip| doctor_ip(*ip, Some(server_address)));
+            .for_each(|ip| doctor_ip(*ip, Some(&server_address)));
     }
 }
 
@@ -161,7 +138,7 @@ fn main() {
         }
         "doctor" => {
             if args.len() <= 2 {
-                error_then_help("You must supply the rustdesk-server address");
+                error_then_help("You must supply the vnfap-server address");
             }
             doctor(args[2].as_str());
         }
