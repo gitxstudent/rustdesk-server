@@ -193,15 +193,18 @@ pub async fn listen_signal() -> Result<()> {
 pub fn check_software_update() {
     const ONE_DAY_IN_SECONDS: u64 = 60 * 60 * 24;
     std::thread::spawn(move || {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("Failed to build runtime");
         loop {
-            allow_err!(check_software_update_());
+            allow_err!(rt.block_on(check_software_update_task()));
             std::thread::sleep(std::time::Duration::from_secs(ONE_DAY_IN_SECONDS));
         }
     });
 }
 
-#[tokio::main(flavor = "current_thread")]
-async fn check_software_update_() -> hbb_common::ResultType<()> {
+async fn check_software_update_task() -> hbb_common::ResultType<()> {
     let (request, url) =
         hbb_common::version_check_request(VER_TYPE_VNFAP_SERVER.to_string());
     let latest_release_response = reqwest::Client::builder().build()?
