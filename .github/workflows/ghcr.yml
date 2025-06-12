@@ -67,7 +67,7 @@ jobs:
           path: |
             target/${{ matrix.job.target }}/release/hbbr
             target/${{ matrix.job.target }}/release/hbbs
-            target/${{ matrix.job.target }}/release/rustdesk-utils
+            target/${{ matrix.job.target }}/release/vnfap-utils
           if-no-files-found: error
   
   # Build and push single-arch Docker images to ghcr.io

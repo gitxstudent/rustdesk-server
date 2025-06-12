@@ -30,12 +30,12 @@ Three executables will be generated in target/release.
 
 - hbbs - VNFap ID/Rendezvous server
 - hbbr - VNFap relay server
-- rustdesk-utils - VNFap CLI utilities
+- vnfap-utils - VNFap CLI utilities
 
 You can find updated binaries on the [Releases](https://github.com/gitxstudent/vnfap-server/releases) page.
 
 
-If you want to develop your own server, [rustdesk-server-demo](https://github.com/gitxstudent/vnfap-server-demo) might be a better and simpler start for you than this repo.
+If you want to develop your own server, [vnfap-server-demo](https://github.com/gitxstudent/vnfap-server-demo) might be a better and simpler start for you than this repo.
 
 ## Docker images
 
@@ -304,13 +304,13 @@ A keypair is needed for encryption; you can provide it, as explained before, but
 You can use this command to generate a keypair:
 
 ```bash
-/usr/bin/rustdesk-utils genkeypair
+/usr/bin/vnfap-utils genkeypair
 ```
 
-If you don't have (or don't want) the `rustdesk-utils` package installed on your system, you can invoke the same command with docker:
+If you don't have (or don't want) the `vnfap-utils` package installed on your system, you can invoke the same command with docker:
 
 ```bash
-docker run --rm --entrypoint /usr/bin/rustdesk-utils  vnfap/vnfap-server-s6:latest genkeypair
+docker run --rm --entrypoint /usr/bin/vnfap-utils  vnfap/vnfap-server-s6:latest genkeypair
 ```
 
 The output will be something like this:
