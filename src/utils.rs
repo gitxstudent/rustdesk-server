@@ -34,17 +34,14 @@ fn gen_keypair() {
 
 fn validate_keypair(pk: &str, sk: &str) -> ResultType<()> {
     let sk1 = base64::decode(sk).map_err(|_| "Invalid secret key")?;
-    let secret_key =
-        sign::SecretKey::from_slice(&sk1).ok_or("Invalid Secret key")?;
+    let secret_key = sign::SecretKey::from_slice(&sk1).ok_or("Invalid Secret key")?;
 
     let pk1 = base64::decode(pk).map_err(|_| "Invalid public key")?;
-    let public_key =
-        sign::PublicKey::from_slice(&pk1).ok_or("Invalid Public key")?;
+    let public_key = sign::PublicKey::from_slice(&pk1).ok_or("Invalid Public key")?;
 
     const TEST_BYTES: &[u8] = b"This is meh.";
     let signed = sign::sign(TEST_BYTES, &secret_key);
-    let verified = sign::verify(&signed, &public_key)
-        .map_err(|_| "Key pair is INVALID")?;
+    let verified = sign::verify(&signed, &public_key).map_err(|_| "Key pair is INVALID")?;
     if TEST_BYTES != &verified[..] {
         bail!("Key pair is INVALID");
     }
@@ -52,10 +49,19 @@ fn validate_keypair(pk: &str, sk: &str) -> ResultType<()> {
 }
 
 fn doctor_tcp(address: std::net::IpAddr, port: &str, desc: &str) {
+    use std::net::SocketAddr;
+    use std::time::Duration;
+
     let start = std::time::Instant::now();
     let conn = format!("{address}:{port}");
-    if let Ok(_stream) = TcpStream::connect(conn.as_str()) {
-        let elapsed = std::time::Instant::now().duration_since(start);
+    let timeout = Duration::from_secs(3);
+    let result = conn
+        .parse::<SocketAddr>()
+        .ok()
+        .map(|addr| TcpStream::connect_timeout(&addr, timeout))
+        .or_else(|| Some(TcpStream::connect(conn.as_str())));
+    if result.map_or(false, |r| r.is_ok()) {
+        let elapsed = start.elapsed();
         println!(
             "TCP Port {} ({}): OK in {} ms",
             port,
