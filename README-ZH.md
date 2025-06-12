@@ -10,13 +10,13 @@
 
 # VNFap Server Program
 
-[![build](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml/badge.svg)](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml)
+[![build](https://github.com/gitxstudent/vnfap-server/actions/workflows/build.yaml/badge.svg)](https://github.com/gitxstudent/vnfap-server/actions/workflows/build.yaml)
 
-[**下载**](https://github.com/rustdesk/rustdesk-server/releases)
+[**下载**](https://github.com/gitxstudent/vnfap-server/releases)
 
 [**说明文件**](https://vnfap.com/docs/zh-cn/self-host/)
 
-[**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
+[**FAQ**](https://github.com/gitxstudent/vnfap-server/wiki/FAQ)
 
 自行搭建属于你的VNFap服务器,所有的一切都是免费且开源的
 
@@ -32,10 +32,10 @@ cargo build --release
 - hbbr - VNFap 中继服务器
 - rustdesk-utils - VNFap 命令行工具
 
-您可以在 [releases](https://github.com/rustdesk/rustdesk-server/releases) 页面中找到最新的服务端软件。
+您可以在 [releases](https://github.com/gitxstudent/vnfap-server/releases) 页面中找到最新的服务端软件。
 
 
-如果您想开发自己的服务器，[rustdesk-server-demo](https://github.com/rustdesk/rustdesk-server-demo) 应该会比直接使用这个仓库更简单快捷。
+如果您想开发自己的服务器，[rustdesk-server-demo](https://github.com/gitxstudent/vnfap-server-demo) 应该会比直接使用这个仓库更简单快捷。
 
 ## Docker 镜像
 
@@ -43,18 +43,18 @@ Docker镜像会在每次 GitHub 发布新的release版本时自动构建。我�
 
 ### Classic 传统镜像
 
-这个类型的镜像是基于 `ubuntu-20.04` 进行构建，镜像仅包含两个主要的可执行程序（`hbbr` 和 `hbbs`）。它们可以通过以下tag在 [Docker Hub](https://hub.docker.com/r/rustdesk/rustdesk-server/) 上获得：
+这个类型的镜像是基于 `ubuntu-20.04` 进行构建，镜像仅包含两个主要的可执行程序（`hbbr` 和 `hbbs`）。它们可以通过以下tag在 [Docker Hub](https://hub.docker.com/r/vnfap/vnfap-server/) 上获得：
 
 | 架构      | image:tag                                 |
 |---------| ----------------------------------------- |
-| amd64   | `rustdesk/rustdesk-server:latest`         |
-| arm64v8 | `rustdesk/rustdesk-server:latest-arm64v8` |
+| amd64   | `vnfap/vnfap-server:latest`         |
+| arm64v8 | `vnfap/vnfap-server:latest-arm64v8` |
 
 您可以使用以下命令，直接通过 ``docker run`` 來启动这些镜像：
 
 ```bash
-docker run --name hbbs --net=host -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbs -r <relay-server-ip[:port]> 
-docker run --name hbbr --net=host -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbr 
+docker run --name hbbs --net=host -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbs -r <relay-server-ip[:port]> 
+docker run --name hbbr --net=host -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbr 
 ```
 
 或不使用 `--net=host` 参数启动， 但这样 P2P 直连功能将无法工作。
@@ -62,8 +62,8 @@ docker run --name hbbr --net=host -v "$PWD/data:/root" -d rustdesk/rustdesk-serv
 对于使用了 SELinux 的系统，您需要将 ``/root`` 替换为 ``/root:z``，以保证容器的正常运行。或者，也可以通过添加参数 ``--security-opt label=disable`` 来完全禁用 SELinux 容器隔离。
 
 ```bash
-docker run --name hbbs -p 21115:21115 -p 21116:21116 -p 21116:21116/udp -p 21118:21118 -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbs -r <relay-server-ip[:port]> 
-docker run --name hbbr -p 21117:21117 -p 21119:21119 -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbr 
+docker run --name hbbs -p 21115:21115 -p 21116:21116 -p 21116:21116/udp -p 21118:21118 -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbs -r <relay-server-ip[:port]> 
+docker run --name hbbr -p 21117:21117 -p 21119:21119 -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbr 
 ```
 
 `relay-server-ip` 参数是运行这些容器的服务器的 IP 地址（或 DNS 名称）。如果你不想使用 **21117** 作为 `hbbr` 的服务端口,可使用可选参数 `port` 进行指定。
@@ -74,7 +74,7 @@ docker run --name hbbr -p 21117:21117 -p 21119:21119 -v "$PWD/data:/root" -d rus
 version: '3'
 
 networks:
-  rustdesk-net:
+  vnfap-net:
     external: false
 
 services:
@@ -85,12 +85,12 @@ services:
       - 21116:21116
       - 21116:21116/udp
       - 21118:21118
-    image: rustdesk/rustdesk-server:latest
-    command: hbbs -r rustdesk.example.com:21117
+    image: vnfap/vnfap-server:latest
+    command: hbbs -r vnfap.example.com:21117
     volumes:
       - ./data:/root
     networks:
-      - rustdesk-net
+      - vnfap-net
     depends_on:
       - hbbr
     restart: unless-stopped
@@ -100,12 +100,12 @@ services:
     ports:
       - 21117:21117
       - 21119:21119
-    image: rustdesk/rustdesk-server:latest
+    image: vnfap/vnfap-server:latest
     command: hbbr
     volumes:
       - ./data:/root
     networks:
-      - rustdesk-net
+      - vnfap-net
     restart: unless-stopped
 ```
 
@@ -115,26 +115,26 @@ services:
 
 ## 基于 S6-overlay 的镜像
 
-> 这些镜像是针对 `busybox:stable` 构建的，并添加了可执行程序（hbbr 和 hbbs）以及 [S6-overlay](https://github.com/just-containers/s6-overlay)。 它们可以使用以下tag在 [Docker hub](https://hub.docker.com/r/rustdesk/rustdesk-server-s6/) 上获取：
+> 这些镜像是针对 `busybox:stable` 构建的，并添加了可执行程序（hbbr 和 hbbs）以及 [S6-overlay](https://github.com/just-containers/s6-overlay)。 它们可以使用以下tag在 [Docker hub](https://hub.docker.com/r/vnfap/vnfap-server-s6/) 上获取：
 
 
 | 架構      | version | image:tag                                    |
 | --------- | ------- | -------------------------------------------- |
-| multiarch | latest  | `rustdesk/rustdesk-server-s6:latest`         |
-| amd64     | latest  | `rustdesk/rustdesk-server-s6:latest-amd64`   |
-| i386      | latest  | `rustdesk/rustdesk-server-s6:latest-i386`    |
-| arm64v8   | latest  | `rustdesk/rustdesk-server-s6:latest-arm64v8` |
-| armv7     | latest  | `rustdesk/rustdesk-server-s6:latest-armv7`   |
-| multiarch | 2       | `rustdesk/rustdesk-server-s6:2`              |
-| amd64     | 2       | `rustdesk/rustdesk-server-s6:2-amd64`        |
-| i386      | 2       | `rustdesk/rustdesk-server-s6:2-i386`         |
-| arm64v8   | 2       | `rustdesk/rustdesk-server-s6:2-arm64v8`      |
-| armv7     | 2       | `rustdesk/rustdesk-server-s6:2-armv7`        |
-| multiarch | 2.0.0   | `rustdesk/rustdesk-server-s6:2.0.0`          |
-| amd64     | 2.0.0   | `rustdesk/rustdesk-server-s6:2.0.0-amd64`    |
-| i386      | 2.0.0   | `rustdesk/rustdesk-server-s6:2.0.0-i386`     |
-| arm64v8   | 2.0.0   | `rustdesk/rustdesk-server-s6:2.0.0-arm64v8`  |
-| armv7     | 2.0.0   | `rustdesk/rustdesk-server-s6:2.0.0-armv7`    |
+| multiarch | latest  | `vnfap/vnfap-server-s6:latest`         |
+| amd64     | latest  | `vnfap/vnfap-server-s6:latest-amd64`   |
+| i386      | latest  | `vnfap/vnfap-server-s6:latest-i386`    |
+| arm64v8   | latest  | `vnfap/vnfap-server-s6:latest-arm64v8` |
+| armv7     | latest  | `vnfap/vnfap-server-s6:latest-armv7`   |
+| multiarch | 2       | `vnfap/vnfap-server-s6:2`              |
+| amd64     | 2       | `vnfap/vnfap-server-s6:2-amd64`        |
+| i386      | 2       | `vnfap/vnfap-server-s6:2-i386`         |
+| arm64v8   | 2       | `vnfap/vnfap-server-s6:2-arm64v8`      |
+| armv7     | 2       | `vnfap/vnfap-server-s6:2-armv7`        |
+| multiarch | 2.0.0   | `vnfap/vnfap-server-s6:2.0.0`          |
+| amd64     | 2.0.0   | `vnfap/vnfap-server-s6:2.0.0-amd64`    |
+| i386      | 2.0.0   | `vnfap/vnfap-server-s6:2.0.0-i386`     |
+| arm64v8   | 2.0.0   | `vnfap/vnfap-server-s6:2.0.0-arm64v8`  |
+| armv7     | 2.0.0   | `vnfap/vnfap-server-s6:2.0.0-armv7`    |
 
 强烈建议您使用`major version` 或 `latest` tag 的 `multiarch` 架构的镜像。
 
@@ -143,22 +143,22 @@ S6-overlay 在此处作为监控程序，用以保证两个进程的运行，因
 您可以使用 `docker run` 命令直接启动镜像，如下：
 
 ```bash
-docker run --name rustdesk-server \ 
+docker run --name vnfap-server \ 
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
-  -v "$PWD/data:/data" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/data:/data" -d vnfap/vnfap-server-s6:latest
 ```
 
 或刪去 `--net=host` 参数， 但 P2P 直连功能将无法工作。
 
 ```bash
-docker run --name rustdesk-server \
+docker run --name vnfap-server \
   -p 21115:21115 -p 21116:21116 -p 21116:21116/udp \
   -p 21117:21117 -p 21118:21118 -p 21119:21119 \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
-  -v "$PWD/data:/data" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/data:/data" -d vnfap/vnfap-server-s6:latest
 ```
 
 或着您也可以使用 docker-compose 文件:
@@ -167,8 +167,8 @@ docker run --name rustdesk-server \
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -176,9 +176,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
     volumes:
       - ./data:/data
@@ -207,22 +207,22 @@ services:
 您可以使用 Docker 环境变量來存储密钥。如下：
 
 ```bash
-docker run --name rustdesk-server \ 
+docker run --name vnfap-server \ 
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
   -e "DB_URL=/db/db_v2.sqlite3" \
   -e "KEY_PRIV=FR2j78IxfwJNR+HjLluQ2Nh7eEryEeIZCwiQDPVe+PaITKyShphHAsPLn7So0OqRs92nGvSRdFJnE2MSyrKTIQ==" \
   -e "KEY_PUB=iEyskoaYRwLDy5+0qNDqkbPdpxr0kXRSZxNjEsqykyE=" \
-  -v "$PWD/db:/db" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/db:/db" -d vnfap/vnfap-server-s6:latest
 ```
 
 ```yaml
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -230,9 +230,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
       - "DB_URL=/db/db_v2.sqlite3"
       - "KEY_PRIV=FR2j78IxfwJNR+HjLluQ2Nh7eEryEeIZCwiQDPVe+PaITKyShphHAsPLn7So0OqRs92nGvSRdFJnE2MSyrKTIQ=="
@@ -251,22 +251,22 @@ services:
 ```bash
 cat secrets/id_ed25519.pub | docker secret create key_pub -
 cat secrets/id_ed25519 | docker secret create key_priv -
-docker service create --name rustdesk-server \
+docker service create --name vnfap-server \
   --secret key_priv --secret key_pub \
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
   -e "DB_URL=/db/db_v2.sqlite3" \
   --mount "type=bind,source=$PWD/db,destination=/db" \
-  rustdesk/rustdesk-server-s6:latest
+  vnfap/vnfap-server-s6:latest
 ```
 
 ```yaml
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -274,9 +274,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
       - "DB_URL=/db/db_v2.sqlite3"
     volumes:
@@ -306,7 +306,7 @@ secrets:
 如果您沒有（或不想）在系统上安装 `rustdesk-utils` 套件，您可以使用 Docker 执行相同的命令：
 
 ```bash
-docker run --rm --entrypoint /usr/bin/rustdesk-utils  rustdesk/rustdesk-server-s6:latest genkeypair
+docker run --rm --entrypoint /usr/bin/rustdesk-utils  vnfap/vnfap-server-s6:latest genkeypair
 ```
 
 运行后的输出内容如下：
@@ -318,7 +318,7 @@ Secret Key:  egAVd44u33ZEUIDTtksGcHeVeAwywarEdHmf99KM5ajwEsuG3NQFT9coAfiZ6nen4hf
 
 ## .deb 套件
 
-每个可执行文件都有单独的 .deb 套件可供使用，您可以在 [releases](https://github.com/rustdesk/rustdesk-server/releases) 页面中找到它們。
+每个可执行文件都有单独的 .deb 套件可供使用，您可以在 [releases](https://github.com/gitxstudent/vnfap-server/releases) 页面中找到它們。
 這些套件适用于以下发行版：
 
 - Ubuntu 22.04 LTS

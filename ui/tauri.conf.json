@@ -7,7 +7,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "rustdesk_server",
+    "productName": "vnfap_server",
     "version": "0.1.2"
   },
   "tauri": {

@@ -10,13 +10,13 @@
 
 # VNFap Server Programa
 
-[![build](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml/badge.svg)](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml)
+[![build](https://github.com/gitxstudent/vnfap-server/actions/workflows/build.yaml/badge.svg)](https://github.com/gitxstudent/vnfap-server/actions/workflows/build.yaml)
 
-[**Download**](https://github.com/rustdesk/rustdesk-server/releases)
+[**Download**](https://github.com/gitxstudent/vnfap-server/releases)
 
 [**Handleiding**](https://vnfap.com/docs/nl/self-host/)
 
-[**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
+[**FAQ**](https://github.com/gitxstudent/vnfap-server/wiki/FAQ)
 
 Zelf uw eigen VNFap server hosten, het is gratis en open source.
 
@@ -32,9 +32,9 @@ In target/release worden drie uitvoerbare bestanden gegenereerd.
 - hbbr - VNFap relay server
 - rustdesk-utils - VNFap CLI hulpprogramma's
 
-U kunt bijgewerkte binaries vinden op [releases](https://github.com/rustdesk/rustdesk-server/releases) pagina.
+U kunt bijgewerkte binaries vinden op [releases](https://github.com/gitxstudent/vnfap-server/releases) pagina.
 
-Als u uw eigen server wilt ontwikkelen, is [rustdesk-server-demo](https://github.com/rustdesk/rustdesk-server-demo) misschien een betere en eenvoudigere start voor u dan deze repo.
+Als u uw eigen server wilt ontwikkelen, is [rustdesk-server-demo](https://github.com/gitxstudent/vnfap-server-demo) misschien een betere en eenvoudigere start voor u dan deze repo.
 
 ## Docker bestanden (images)
 
@@ -42,18 +42,18 @@ Docker bestanden (images) worden automatisch gegenereerd en gepubliceerd bij elk
 
 ### Klassiek bestand (image)
 
-Deze bestanden (images) zijn gebouwd voor `ubuntu-20.04` met als enige toevoeging de belangrijkste binaries (`hbbr` en `hbbs`). Ze zijn beschikbaar op [Docker hub](https://hub.docker.com/r/rustdesk/rustdesk-server/) met deze tags:
+Deze bestanden (images) zijn gebouwd voor `ubuntu-20.04` met als enige toevoeging de belangrijkste binaries (`hbbr` en `hbbs`). Ze zijn beschikbaar op [Docker hub](https://hub.docker.com/r/vnfap/vnfap-server/) met deze tags:
 
 | architectuur | image:tag |
 | --- | --- |
-| amd64 | `rustdesk/rustdesk-server:latest` |
-| arm64v8 | `rustdesk/rustdesk-server:latest-arm64v8` |
+| amd64 | `vnfap/vnfap-server:latest` |
+| arm64v8 | `vnfap/vnfap-server:latest-arm64v8` |
 
 U kunt deze bestanden (images) direct starten via `docker run` met deze commando's:
 
 ```bash
-docker run --name hbbs --net=host -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbs -r <relay-server-ip[:port]> 
-docker run --name hbbr --net=host -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbr 
+docker run --name hbbs --net=host -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbs -r <relay-server-ip[:port]> 
+docker run --name hbbr --net=host -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbr 
 ```
 
 of zonder `--net=host`, maar een directe P2P verbinding zal niet werken.
@@ -61,8 +61,8 @@ of zonder `--net=host`, maar een directe P2P verbinding zal niet werken.
 Voor systemen die SELinux gebruiken is het vervangen van `/root` door `/root:z` nodig om de containers correct te laten draaien. Als alternatief kan SELinux containerscheiding volledig worden uitgeschakeld door de optie `--security-opt label=disable` toe te voegen.
 
 ```bash
-docker run --name hbbs -p 21115:21115 -p 21116:21116 -p 21116:21116/udp -p 21118:21118 -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbs -r <relay-server-ip[:port]> 
-docker run --name hbbr -p 21117:21117 -p 21119:21119 -v "$PWD/data:/root" -d rustdesk/rustdesk-server:latest hbbr 
+docker run --name hbbs -p 21115:21115 -p 21116:21116 -p 21116:21116/udp -p 21118:21118 -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbs -r <relay-server-ip[:port]> 
+docker run --name hbbr -p 21117:21117 -p 21119:21119 -v "$PWD/data:/root" -d vnfap/vnfap-server:latest hbbr 
 ```
 
 De `relay-server-ip` parameter is het IP adres (of dns naam) van de server waarop deze containers draaien. De **optionele** `port` parameter moet gebruikt worden als je een andere poort dan **21117** gebruikt voor `hbbr`.
@@ -73,7 +73,7 @@ U kunt ook docker-compose gebruiken, met deze configuratie als sjabloon:
 version: '3'
 
 networks:
-  rustdesk-net:
+  vnfap-net:
     external: false
 
 services:
@@ -84,12 +84,12 @@ services:
       - 21116:21116
       - 21116:21116/udp
       - 21118:21118
-    image: rustdesk/rustdesk-server:latest
-    command: hbbs -r rustdesk.example.com:21117
+    image: vnfap/vnfap-server:latest
+    command: hbbs -r vnfap.example.com:21117
     volumes:
       - ./data:/root
     networks:
-      - rustdesk-net
+      - vnfap-net
     depends_on:
       - hbbr
     restart: unless-stopped
@@ -99,12 +99,12 @@ services:
     ports:
       - 21117:21117
       - 21119:21119
-    image: rustdesk/rustdesk-server:latest
+    image: vnfap/vnfap-server:latest
     command: hbbr
     volumes:
       - ./data:/root
     networks:
-      - rustdesk-net
+      - vnfap-net
     restart: unless-stopped
 ```
 
@@ -114,25 +114,25 @@ Bewerk regel 16 om te verwijzen naar uw relais-server (degene die luistert op po
 
 ## S6-overlay gebaseerde bestanden
 
-Deze bestanden (images) zijn gebouwd tegen `busybox:stable` met toevoeging van de binaries (zowel hbbr als hbbs) en [S6-overlay](https://github.com/just-containers/s6-overlay). Ze zijn beschikbaar op [Docker hub](https://hub.docker.com/r/rustdesk/rustdesk-server-s6/) met deze tags:
+Deze bestanden (images) zijn gebouwd tegen `busybox:stable` met toevoeging van de binaries (zowel hbbr als hbbs) en [S6-overlay](https://github.com/just-containers/s6-overlay). Ze zijn beschikbaar op [Docker hub](https://hub.docker.com/r/vnfap/vnfap-server-s6/) met deze tags:
 
 | architectuur | versie | image:tag |
 | --- | --- | --- |
-| multiarch | latest | `rustdesk/rustdesk-server-s6:latest` |
-| amd64 | latest | `rustdesk/rustdesk-server-s6:latest-amd64` |
-| i386 | latest | `rustdesk/rustdesk-server-s6:latest-i386` |
-| arm64v8 | latest | `rustdesk/rustdesk-server-s6:latest-arm64v8` |
-| armv7 | latest | `rustdesk/rustdesk-server-s6:latest-armv7` |
-| multiarch | 2 | `rustdesk/rustdesk-server-s6:2` |
-| amd64 | 2 | `rustdesk/rustdesk-server-s6:2-amd64` |
-| i386 | 2 | `rustdesk/rustdesk-server-s6:2-i386` |
-| arm64v8 | 2 | `rustdesk/rustdesk-server-s6:2-arm64v8` |
-| armv7 | 2 | `rustdesk/rustdesk-server-s6:2-armv7` |
-| multiarch | 2.0.0 | `rustdesk/rustdesk-server-s6:2.0.0` |
-| amd64 | 2.0.0 | `rustdesk/rustdesk-server-s6:2.0.0-amd64` |
-| i386 | 2.0.0 | `rustdesk/rustdesk-server-s6:2.0.0-i386` |
-| arm64v8 | 2.0.0 | `rustdesk/rustdesk-server-s6:2.0.0-arm64v8` |
-| armv7 | 2.0.0 | `rustdesk/rustdesk-server-s6:2.0.0-armv7` |
+| multiarch | latest | `vnfap/vnfap-server-s6:latest` |
+| amd64 | latest | `vnfap/vnfap-server-s6:latest-amd64` |
+| i386 | latest | `vnfap/vnfap-server-s6:latest-i386` |
+| arm64v8 | latest | `vnfap/vnfap-server-s6:latest-arm64v8` |
+| armv7 | latest | `vnfap/vnfap-server-s6:latest-armv7` |
+| multiarch | 2 | `vnfap/vnfap-server-s6:2` |
+| amd64 | 2 | `vnfap/vnfap-server-s6:2-amd64` |
+| i386 | 2 | `vnfap/vnfap-server-s6:2-i386` |
+| arm64v8 | 2 | `vnfap/vnfap-server-s6:2-arm64v8` |
+| armv7 | 2 | `vnfap/vnfap-server-s6:2-armv7` |
+| multiarch | 2.0.0 | `vnfap/vnfap-server-s6:2.0.0` |
+| amd64 | 2.0.0 | `vnfap/vnfap-server-s6:2.0.0-amd64` |
+| i386 | 2.0.0 | `vnfap/vnfap-server-s6:2.0.0-i386` |
+| arm64v8 | 2.0.0 | `vnfap/vnfap-server-s6:2.0.0-arm64v8` |
+| armv7 | 2.0.0 | `vnfap/vnfap-server-s6:2.0.0-armv7` |
 
 Je wordt sterk aangeraden om het `multiarch` bestand (image) te gebruiken met de `major version` of `latest` tag.
 
@@ -141,22 +141,22 @@ De S6-overlay fungeert als supervisor en houdt beide processen draaiende, dus me
 U kunt deze bestanden (images) direct starten via `docker run` met dit commando:
 
 ```bash
-docker run --name rustdesk-server \ 
+docker run --name vnfap-server \ 
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
-  -v "$PWD/data:/data" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/data:/data" -d vnfap/vnfap-server-s6:latest
 ```
 
 of zonder `--net=host`, maar een directe P2P verbinding zal niet werken.
 
 ```bash
-docker run --name rustdesk-server \
+docker run --name vnfap-server \
   -p 21115:21115 -p 21116:21116 -p 21116:21116/udp \
   -p 21117:21117 -p 21118:21118 -p 21119:21119 \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
-  -v "$PWD/data:/data" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/data:/data" -d vnfap/vnfap-server-s6:latest
 ```
 
 Of u kunt een docker-compose bestand gebruiken:
@@ -165,8 +165,8 @@ Of u kunt een docker-compose bestand gebruiken:
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -174,9 +174,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
     volumes:
       - ./data:/data
@@ -205,22 +205,22 @@ Als je geen keys opgeeft, zal `hbbs` er een voor je genereren en op de standaard
 U kunt docker omgevingsvariabelen gebruiken om de keys op te slaan. Volg gewoon deze voorbeelden:
 
 ```bash
-docker run --name rustdesk-server \ 
+docker run --name vnfap-server \ 
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
   -e "DB_URL=/db/db_v2.sqlite3" \
   -e "KEY_PRIV=FR2j78IxfwJNR+HjLluQ2Nh7eEryEeIZCwiQDPVe+PaITKyShphHAsPLn7So0OqRs92nGvSRdFJnE2MSyrKTIQ==" \
   -e "KEY_PUB=iEyskoaYRwLDy5+0qNDqkbPdpxr0kXRSZxNjEsqykyE=" \
-  -v "$PWD/db:/db" -d rustdesk/rustdesk-server-s6:latest
+  -v "$PWD/db:/db" -d vnfap/vnfap-server-s6:latest
 ```
 
 ```yaml
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -228,9 +228,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
       - "DB_URL=/db/db_v2.sqlite3"
       - "KEY_PRIV=FR2j78IxfwJNR+HjLluQ2Nh7eEryEeIZCwiQDPVe+PaITKyShphHAsPLn7So0OqRs92nGvSRdFJnE2MSyrKTIQ=="
@@ -249,22 +249,22 @@ Volg deze voorbeelden:
 ```bash
 cat secrets/id_ed25519.pub | docker secret create key_pub -
 cat secrets/id_ed25519 | docker secret create key_priv -
-docker service create --name rustdesk-server \
+docker service create --name vnfap-server \
   --secret key_priv --secret key_pub \
   --net=host \
-  -e "RELAY=rustdeskrelay.example.com" \
+  -e "RELAY=vnfaprelay.example.com" \
   -e "ENCRYPTED_ONLY=1" \
   -e "DB_URL=/db/db_v2.sqlite3" \
   --mount "type=bind,source=$PWD/db,destination=/db" \
-  rustdesk/rustdesk-server-s6:latest
+  vnfap/vnfap-server-s6:latest
 ```
 
 ```yaml
 version: '3'
 
 services:
-  rustdesk-server:
-    container_name: rustdesk-server
+  vnfap-server:
+    container_name: vnfap-server
     ports:
       - 21115:21115
       - 21116:21116
@@ -272,9 +272,9 @@ services:
       - 21117:21117
       - 21118:21118
       - 21119:21119
-    image: rustdesk/rustdesk-server-s6:latest
+    image: vnfap/vnfap-server-s6:latest
     environment:
-      - "RELAY=rustdesk.example.com:21117"
+      - "RELAY=vnfap.example.com:21117"
       - "ENCRYPTED_ONLY=1"
       - "DB_URL=/db/db_v2.sqlite3"
     volumes:
@@ -304,7 +304,7 @@ U kunt dit commando gebruiken om een key paar te genereren:
 Als u het pakket `rustdesk-utils` niet op uw systeem hebt staan (of wilt), kunt u hetzelfde commando met docker uitvoeren:
 
 ```bash
-docker run --rm --entrypoint /usr/bin/rustdesk-utils  rustdesk/rustdesk-server-s6:latest genkeypair
+docker run --rm --entrypoint /usr/bin/rustdesk-utils  vnfap/vnfap-server-s6:latest genkeypair
 ```
 
 De uitvoer ziet er ongeveer zo uit:
@@ -316,7 +316,7 @@ Secret Key:  egAVd44u33ZEUIDTtksGcHeVeAwywarEdHmf99KM5ajwEsuG3NQFT9coAfiZ6nen4hf
 
 ## .deb pakketten
 
-Voor elke binary zijn aparte .deb-pakketten beschikbaar, u kunt ze vinden in de [releases](https://github.com/rustdesk/rustdesk-server/releases).
+Voor elke binary zijn aparte .deb-pakketten beschikbaar, u kunt ze vinden in de [releases](https://github.com/gitxstudent/vnfap-server/releases).
 Deze pakketten zijn bedoeld voor de volgende distributies:
 
 - Ubuntu 22.04 LTS

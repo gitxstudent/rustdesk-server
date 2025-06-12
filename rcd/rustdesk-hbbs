@@ -36,7 +36,7 @@ pidfile=/var/run/rustdesk_hbbs.pid
 command=/usr/sbin/daemon
 procname=/usr/local/sbin/hbbs
 rustdesk_hbbs_chdir=/var/db/rustdesk-server
-command_args="-p ${pidfile} -o /var/log/rustdesk-hbbs.log ${procname} ${rustdesk_hbbs_args}"
+command_args="-p ${pidfile} -o /var/log/vnfap-hbbs.log ${procname} ${rustdesk_hbbs_args}"
 ## If you want the daemon to do its log over syslog, comment out the above line and remove the comment from the below replacement
 #command_args="-p ${pidfile} -T ${name} ${procname} ${rustdesk_hbbs_args}"
 
@@ -56,12 +56,12 @@ rustdesk_hbbs_startprecmd()
         mkdir -m 770 ${rustdesk_hbbs_chdir};
         chown ${rustdesk_hbbs_user}:${rustdesk_hbbs_group} ${rustdesk_hbbs_chdir};
     fi
-    if [ -e /var/log/rustdesk-hbbs.log ]; then
-        chown -R ${rustdesk_hbbs_user}:${rustdesk_hbbs_group} /var/log/rustdesk-hbbs.log;
-        chmod 660 /var/log/rustdesk-hbbs.log;
+    if [ -e /var/log/vnfap-hbbs.log ]; then
+        chown -R ${rustdesk_hbbs_user}:${rustdesk_hbbs_group} /var/log/vnfap-hbbs.log;
+        chmod 660 /var/log/vnfap-hbbs.log;
     else
-        install -o ${rustdesk_hbbs_user} -g ${rustdesk_hbbs_group} /dev/null /var/log/rustdesk-hbbs.log;
-        chmod 660 /var/log/rustdesk-hbbs.log;
+        install -o ${rustdesk_hbbs_user} -g ${rustdesk_hbbs_group} /dev/null /var/log/vnfap-hbbs.log;
+        chmod 660 /var/log/vnfap-hbbs.log;
     fi
 }
 
