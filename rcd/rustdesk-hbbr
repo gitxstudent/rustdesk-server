@@ -19,7 +19,7 @@
 . /etc/rc.subr
 
 name=rustdesk_hbbr
-desc="Rustdesk Relay Server"
+desc="VNFap Relay Server"
 rcvar=rustdesk_hbbr_enable
 
 load_rc_config $name

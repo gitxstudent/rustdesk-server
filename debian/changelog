@@ -35,10 +35,10 @@ rustdesk-server (1.1.7) UNRELEASED; urgency=medium
 
   * ipv6 support
 
- -- rustdesk <info@rustdesk.com>  Wed, 11 Jan 2023 11:27:00 +0800
+ -- HuyMin <info@vnfap.com>  Wed, 11 Jan 2023 11:27:00 +0800
 
 rustdesk-server (1.1.6) UNRELEASED; urgency=medium
 
   * Initial release
 
- -- open-trade <info@rustdesk.com>  Fri, 15 Jul 2022 12:27:27 +0200
+ -- HuyMin <info@vnfap.com>  Fri, 15 Jul 2022 12:27:27 +0200

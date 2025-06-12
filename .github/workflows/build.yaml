@@ -140,7 +140,7 @@ jobs:
           mkdir setup\logs
           makensis /V1 setup.nsi
           mkdir SignOutput
-          mv RustDeskServer.Setup.exe SignOutput\
+          mv VNFapServer.Setup.exe SignOutput\
           mv ..\target\x86_64-pc-windows-msvc\release\*.exe SignOutput\
         working-directory: ./ui
 
@@ -162,7 +162,7 @@ jobs:
             ui\SignOutput\hbbr.exe
             ui\SignOutput\hbbs.exe
             ui\SignOutput\rustdesk-utils.exe
-            ui\SignOutput\RustDeskServer.Setup.exe
+            ui\SignOutput\VNFapServer.Setup.exe
           if-no-files-found: error
 
   # github (draft) release with all binaries

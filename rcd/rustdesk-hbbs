@@ -21,7 +21,7 @@
 . /etc/rc.subr
 
 name=rustdesk_hbbs
-desc="Rustdesk ID/Rendezvous Server"
+desc="VNFap ID/Rendezvous Server"
 rcvar=rustdesk_hbbs_enable
 
 load_rc_config $name

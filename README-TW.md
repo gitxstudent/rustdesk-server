@@ -8,17 +8,17 @@
   [<a href="README.md">English</a>] | [<a href="README-DE.md">Deutsch</a>] | [<a href="README-NL.md">Nederlands</a>] | [<a href="README-ZH.md">简体中文</a>]<br>
 </p>
 
-# RustDesk Server Program
+# VNFap Server Program
 
 [![build](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml/badge.svg)](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml)
 
 [**下載**](https://github.com/rustdesk/rustdesk-server/releases)
 
-[**說明文件**](https://rustdesk.com/docs/zh-tw/self-host/)
+[**說明文件**](https://vnfap.com/docs/zh-tw/self-host/)
 
 [**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
 
-自行建置屬於您自己的 RustDesk 伺服器，它是免費的且開源。
+自行建置屬於您自己的 VNFap 伺服器，它是免費的且開源。
 
 ## 如何自行建置
 
@@ -28,13 +28,12 @@ cargo build --release
 
 在 target/release 中會產生三個可執行檔。
 
-- hbbs - RustDesk ID/會合伺服器
-- hbbr - RustDesk 中繼伺服器
-- rustdesk-utils - RustDesk 命令行工具
+- hbbs - VNFap ID/會合伺服器
+- hbbr - VNFap 中繼伺服器
+- rustdesk-utils - VNFap 命令行工具
 
 您可以在 [releases](https://github.com/rustdesk/rustdesk-server/releases) 頁面上找到更新的執行檔。
 
-如果您需要額外功能，[RustDesk 專業版伺服器](https://rustdesk.com/pricing.html) 或許更適合您。
 
 如果您想開發自己的伺服器，[rustdesk-server-demo](https://github.com/rustdesk/rustdesk-server-demo) 可能是一個比這個倉庫更好、更簡單的開始。
 

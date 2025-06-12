@@ -8,17 +8,17 @@
   [<a href="README.md">English</a>] | [<a href="README-NL.md">Nederlands</a>] | [<a href="README-TW.md">繁體中文</a>] | [<a href="README-ZH.md">简体中文</a>]<br>
 </p>
 
-# RustDesk Server-Programm
+# VNFap Server-Programm
 
 [![build](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml/badge.svg)](https://github.com/rustdesk/rustdesk-server/actions/workflows/build.yaml)
 
 [**Herunterladen**](https://github.com/rustdesk/rustdesk-server/releases)
 
-[**Handbuch**](https://rustdesk.com/docs/de/self-host/)
+[**Handbuch**](https://vnfap.com/docs/de/self-host/)
 
 [**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
 
-Hosten Sie Ihren eigenen RustDesk-Server selbst, er ist kostenlos und quelloffen.
+Hosten Sie Ihren eigenen VNFap-Server selbst, er ist kostenlos und quelloffen.
 
 ## Manuelles Erstellen
 
@@ -28,9 +28,9 @@ cargo build --release
 
 In target/release werden drei ausführbare Dateien erzeugt.
 
-- hbbs - RustDesk ID/Rendezvous-Server
-- hbbr - RustDesk Relay-Server
-- rustdesk-utils - RustDesk CLI-Utilities
+- hbbs - VNFap ID/Rendezvous-Server
+- hbbr - VNFap Relay-Server
+- rustdesk-utils - VNFap CLI-Utilities
 
 [Hier](https://github.com/rustdesk/rustdesk-server/releases) finden Sie aktualisierte Binärdateien.
 
