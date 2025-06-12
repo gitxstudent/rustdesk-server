@@ -6,8 +6,10 @@ use hbb_common::{
     log,
     tokio,
     ResultType,
-    VER_TYPE_RUSTDESK_SERVER as VER_TYPE_VNFAP_SERVER,
+    VER_TYPE_RUSTDESK_SERVER,
 };
+
+const VER_TYPE_VNFAP_SERVER: &str = VER_TYPE_RUSTDESK_SERVER;
 use ini::Ini;
 use sodiumoxide::crypto::sign;
 use std::{
