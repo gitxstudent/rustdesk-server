@@ -57,17 +57,12 @@ fn doctor_tcp(address: std::net::IpAddr, port: &str, desc: &str) {
     let timeout = Duration::from_secs(3);
     let result = conn
         .parse::<SocketAddr>()
-        .ok()
         .map(|addr| TcpStream::connect_timeout(&addr, timeout))
-        .or_else(|| Some(TcpStream::connect(conn.as_str())));
-    if result.map_or(false, |r| r.is_ok()) {
-        let elapsed = start.elapsed();
-        println!(
-            "TCP Port {} ({}): OK in {} ms",
-            port,
-            desc,
-            elapsed.as_millis()
-        );
+        .unwrap_or_else(|_| TcpStream::connect(conn.as_str()));
+    if let Ok(stream) = result {
+        drop(stream);
+        let elapsed_ms = start.elapsed().as_millis();
+        println!("TCP Port {port} ({desc}): OK in {elapsed_ms} ms");
     } else {
         println!("TCP Port {port} ({desc}): ERROR");
     }
